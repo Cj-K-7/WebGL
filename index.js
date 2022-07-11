@@ -1,5 +1,4 @@
 main();
-
 //
 // Start here
 //
@@ -62,6 +61,37 @@ function main() {
 
   // Draw the scene
   drawScene(gl, programInfo, buffers);
+
+  var triangleVertices = [
+    // X, Y
+    0.0, 0.5, -0.5, -0.5, 0.5, 0.5,
+  ];
+
+  const triangleVertexBufferObject = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexBufferObject);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array(triangleVertices),
+    gl.STATIC_DRAW
+  );
+
+  const positionAttribLocation = gl.getAttribLocation(
+    shaderProgram,
+    "vertPostion"
+  );
+  gl.vertexAttribPointer(
+    positionAttribLocation,
+    2,
+    gl.FLOAT,
+    gl.FALSE,
+    2 * Float32Array.BYTES_PER_ELEMENT,
+    0
+  );
+
+  gl.enableVertexAttribArray(positionAttribLocation);
+
+  gl.useProgram(shaderProgram);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 
 //
@@ -99,7 +129,7 @@ function initBuffers(gl) {
 // Draw the scene.
 //
 function drawScene(gl, programInfo, buffers) {
-  gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
+  gl.clearColor(0.75, 0.85, 0.8, 1.0); // Clear to black, fully opaque
   gl.clearDepth(1.0); // Clear everything
   gl.enable(gl.DEPTH_TEST); // Enable depth testing
   gl.depthFunc(gl.LEQUAL); // Near things obscure far things
@@ -236,3 +266,5 @@ function loadShader(gl, type, source) {
 
   return shader;
 }
+
+//createBuffer
